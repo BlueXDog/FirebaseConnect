@@ -15,19 +15,24 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private FirebaseAnalytics mFirebaseAnalytics;
+
     private static final int SIGN_IN_REQUEST_CODE=111;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
         if(FirebaseAuth.getInstance().getCurrentUser() == null) {
             // Start sign in/sign up activity
             startActivityForResult(
@@ -47,13 +52,21 @@ public class MainActivity extends AppCompatActivity {
                     .show();
 
             // Load chat room contents
-            displayChatMessages();
+            interactWithMap();
+
+
         }
     }
 
-    private void displayChatMessages() {
+    private void interactWithMap() {
+
         Toast.makeText(MainActivity.this,"this is chat mess",Toast.LENGTH_LONG).show();
+        Intent myIntent=new Intent(this,MapActivity.class);
+        startActivities(new Intent[]{myIntent});
+
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -64,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                         "Successfully signed in. Welcome!",
                         Toast.LENGTH_LONG)
                         .show();
-                displayChatMessages();
+                interactWithMap();
             } else {
                 Toast.makeText(this,
                         "We couldn't sign you in. Please try again later.",
